@@ -11,9 +11,7 @@ struct List {
 
 impl ListHandler {
   pub fn new() -> Self {
-    Self {
-      lists: Vec::new(),
-    }
+    Self { lists: Vec::new() }
   }
 
   pub fn start_list(&mut self, order_start: Option<u64>) -> String {

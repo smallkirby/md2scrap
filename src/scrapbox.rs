@@ -1,7 +1,10 @@
 use std::io;
 
 use pulldown_cmark::escape::StrWrite;
-use pulldown_cmark::{Event::{self, *}, Tag};
+use pulldown_cmark::{
+  Event::{self, *},
+  Tag,
+};
 
 mod list;
 
@@ -48,8 +51,7 @@ where
         End(tag) => {
           self.end_tag(tag)?;
         }
-        _ => {
-        }
+        _ => {}
       }
     }
 

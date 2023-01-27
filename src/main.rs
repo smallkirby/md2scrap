@@ -1,7 +1,6 @@
-use anyhow;
-use std::fs;
-use pulldown_cmark::{Parser, Options};
 use obs2scrap::scrapbox;
+use pulldown_cmark::{Options, Parser};
+use std::fs;
 
 fn main() -> anyhow::Result<()> {
   let md_content = fs::read_to_string("sample/sample1.md")?;

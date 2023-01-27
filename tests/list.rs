@@ -22,7 +22,7 @@ fn test_simple_ordered_list() {
   2. two
   3. three
 "##;
-let expected = r##"
+  let expected = r##"
  1. one
  2. two
  3. three
