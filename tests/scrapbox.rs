@@ -21,3 +21,10 @@ fn test_strong() {
   let expected = r##"[* strong]"##;
   util::assert_cmp(md, expected);
 }
+
+#[test]
+fn test_strikethrough() {
+  let md = r##"~~strikethrough~~"##;
+  let expected = r##"[- strikethrough]"##;
+  util::assert_cmp(md, expected);
+}

@@ -92,6 +92,9 @@ where
       Tag::Strong => {
         self.write("[* ")?;
       }
+      Tag::Strikethrough => {
+        self.write("[- ")?;
+      }
       _ => {}
     }
 
@@ -117,7 +120,7 @@ where
         };
         self.write(s)?;
       }
-      Tag::Strong => {
+      Tag::Strong | Tag::Strikethrough => {
         self.write("]")?;
       }
       _ => {}
