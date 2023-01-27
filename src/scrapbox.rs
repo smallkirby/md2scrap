@@ -72,7 +72,7 @@ where
   fn start_tag(&mut self, tag: Tag<'a>) -> io::Result<()> {
     match tag {
       Tag::Heading(level, _, _) => {
-        self.write(&format!("[{} ", "*".repeat(6 - level as usize)))?; // TODO
+        self.write(&format!("[{} ", "*".repeat(6 - level as usize + 1)))?; // TODO
       }
       Tag::List(order) => {
         let s = self.runtime.list.start_list(order);
