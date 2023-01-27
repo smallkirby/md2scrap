@@ -28,3 +28,10 @@ fn test_strikethrough() {
   let expected = r##"[- strikethrough]"##;
   util::assert_cmp(md, expected);
 }
+
+#[test]
+fn test_italic() {
+  let md = r##"*italic*"##;
+  let expected = r##"[/ italic]"##;
+  util::assert_cmp(md, expected);
+}

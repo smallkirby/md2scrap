@@ -95,6 +95,9 @@ where
       Tag::Strikethrough => {
         self.write("[- ")?;
       }
+      Tag::Emphasis => {
+        self.write("[/ ")?;
+      }
       _ => {}
     }
 
@@ -120,7 +123,7 @@ where
         };
         self.write(s)?;
       }
-      Tag::Strong | Tag::Strikethrough => {
+      Tag::Strong | Tag::Strikethrough | Tag::Emphasis => {
         self.write("]")?;
       }
       _ => {}
