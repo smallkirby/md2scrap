@@ -43,7 +43,7 @@ where
       iter,
       writer,
       runtime: ParseRuntime::new(),
-      option: option,
+      option,
     }
   }
 
