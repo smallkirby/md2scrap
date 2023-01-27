@@ -1,17 +1,4 @@
-use pulldown_cmark::{Parser, Options};
-use obs2scrap::scrapbox;
-
-fn convert(md: &str) -> String {
-  let parser = Parser::new_ext(md, Options::all());
-  let mut output = String::new();
-  scrapbox::push_scrapbox(&mut output, parser);
-
-  output
-}
-
-fn assert_cmp(md: &str, expected: &str) {
-  assert_eq!(expected, convert(md).trim_end());
-}
+mod util;
 
 #[test]
 fn test_heading() {
@@ -19,11 +6,11 @@ fn test_heading() {
 normal sentence"##;
   let expected = r##"[****** Heading1]
 normal sentence"##;
-  assert_cmp(md, expected);
+  util::assert_cmp(md, expected);
 
   let md = r##"##### Heading5
 normal sentence"##;
   let expected = r##"[** Heading5]
 normal sentence"##;
-  assert_cmp(md, expected);
+  util::assert_cmp(md, expected);
 }
