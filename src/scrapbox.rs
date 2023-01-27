@@ -2,6 +2,7 @@ use std::io;
 
 use pulldown_cmark::escape::StrWrite;
 use pulldown_cmark::{
+  CodeBlockKind,
   Event::{self, *},
   LinkType, Tag,
 };
@@ -16,12 +17,14 @@ struct ScrapboxWriter<I, W> {
 
 struct ParseRuntime {
   pub list: list::ListHandler,
+  pub is_in_codeblock: bool,
 }
 
 impl ParseRuntime {
   fn new() -> Self {
     Self {
       list: list::ListHandler::new(),
+      is_in_codeblock: false,
     }
   }
 }
@@ -43,13 +46,23 @@ where
     while let Some(event) = self.iter.next() {
       match event {
         Text(text) => {
-          self.write(&text)?;
+          if self.runtime.is_in_codeblock {
+            let lines = text.split('\n');
+            for line in lines {
+              self.writeln(&format!(" {}", line))?;
+            }
+          } else {
+            self.write(&text)?;
+          }
         }
         Start(tag) => {
           self.start_tag(tag)?;
         }
         End(tag) => {
           self.end_tag(tag)?;
+        }
+        Code(code) => {
+          self.write(&format!("`{}`", code))?;
         }
         _ => {}
       }
@@ -98,13 +111,20 @@ where
       Tag::Emphasis => {
         self.write("[/ ")?;
       }
-      Tag::Link(link_type, url, _) => {
-        match link_type {
-          LinkType::Inline => {
-            self.write(&format!("[{} ", url))?;
+      Tag::Link(LinkType::Inline, url, _) => {
+        self.write(&format!("[{} ", url))?;
+      }
+      Tag::CodeBlock(kind) => {
+        match kind {
+          CodeBlockKind::Indented => {
+            self.writeln("code:")?;
           }
-          _ => {} // TODO
+          CodeBlockKind::Fenced(prog) => {
+            self.writeln(&format!("code:{}", prog))?;
+          }
         }
+
+        self.runtime.is_in_codeblock = true;
       }
       _ => {}
     }
@@ -134,13 +154,11 @@ where
       Tag::Strong | Tag::Strikethrough | Tag::Emphasis => {
         self.write("]")?;
       }
-      Tag::Link(link_type, _, _) => {
-        match link_type {
-          LinkType::Inline => {
-            self.write("]")?;
-          }
-          _ => {} // TODO
-        }
+      Tag::Link(LinkType::Inline, _, _) => {
+        self.write("]")?;
+      }
+      Tag::CodeBlock(_) => {
+        self.runtime.is_in_codeblock = false;
       }
       _ => {}
     }
