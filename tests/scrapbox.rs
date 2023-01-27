@@ -17,9 +17,13 @@ fn assert_cmp(md: &str, expected: &str) {
 fn test_heading() {
   let md = r##"# Heading1
 normal sentence"##;
-
   let expected = r##"[****** Heading1]
 normal sentence"##;
+  assert_cmp(md, expected);
 
+  let md = r##"##### Heading5
+normal sentence"##;
+  let expected = r##"[** Heading5]
+normal sentence"##;
   assert_cmp(md, expected);
 }
