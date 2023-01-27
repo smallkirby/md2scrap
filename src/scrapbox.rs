@@ -3,7 +3,7 @@ use std::io;
 use pulldown_cmark::escape::StrWrite;
 use pulldown_cmark::{
   Event::{self, *},
-  Tag,
+  LinkType, Tag,
 };
 
 mod list;
@@ -98,6 +98,14 @@ where
       Tag::Emphasis => {
         self.write("[/ ")?;
       }
+      Tag::Link(link_type, url, _) => {
+        match link_type {
+          LinkType::Inline => {
+            self.write(&format!("[{} ", url))?;
+          }
+          _ => {} // TODO
+        }
+      }
       _ => {}
     }
 
@@ -125,6 +133,14 @@ where
       }
       Tag::Strong | Tag::Strikethrough | Tag::Emphasis => {
         self.write("]")?;
+      }
+      Tag::Link(link_type, _, _) => {
+        match link_type {
+          LinkType::Inline => {
+            self.write("]")?;
+          }
+          _ => {} // TODO
+        }
       }
       _ => {}
     }
