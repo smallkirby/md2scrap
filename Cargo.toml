@@ -1,5 +1,5 @@
 [package]
-name = "obs2scrap"
+name = "md2scrap"
 version = "0.1.0"
 edition = "2021"
 

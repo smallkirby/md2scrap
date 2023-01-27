@@ -1,5 +1,5 @@
 use clap::Parser as ClapParser;
-use obs2scrap::scrapbox;
+use md2scrap::scrapbox;
 use pulldown_cmark::Parser;
 use std::{fs, path};
 

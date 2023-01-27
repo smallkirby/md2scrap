@@ -1,4 +1,4 @@
-use obs2scrap::scrapbox;
+use md2scrap::scrapbox;
 use pulldown_cmark::{Options, Parser};
 
 pub fn convert(md: &str) -> String {
