@@ -54,7 +54,7 @@ where
           if self.runtime.is_in_codeblock {
             let lines = text.split('\n');
             for line in lines {
-              self.writeln(&format!(" {}", line))?;
+              self.writeln(&format!(" {line}"))?;
             }
           } else {
             self.write(&text)?;
@@ -67,7 +67,7 @@ where
           self.end_tag(tag)?;
         }
         Code(code) => {
-          self.write(&format!("`{}`", code))?;
+          self.write(&format!("`{code}`"))?;
         }
         _ => {}
       }
@@ -120,7 +120,7 @@ where
         self.write("[/ ")?;
       }
       Tag::Link(LinkType::Inline, url, _) => {
-        self.write(&format!("[{} ", url))?;
+        self.write(&format!("[{url} "))?;
       }
       Tag::CodeBlock(kind) => {
         match kind {
@@ -129,7 +129,7 @@ where
           }
           CodeBlockKind::Fenced(prog) => {
             let name = if prog.len() > 0 { &prog } else { "unnamed" };
-            self.writeln(&format!("code:{}", name))?;
+            self.writeln(&format!("code:{name}"))?;
           }
         }
 

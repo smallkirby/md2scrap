@@ -34,14 +34,14 @@ impl ListHandler {
   pub fn get(&mut self) -> String {
     let depth = self.lists.len();
     let list = self.lists.last_mut().unwrap();
-    let s = if list.order == 0 {
+    
+
+    if list.order == 0 {
       " ".repeat(depth)
     } else {
       list.order += 1;
       format!("{}{}. ", " ".repeat(depth), list.order - 1)
-    };
-
-    s
+    }
   }
 
   pub fn depth(&self) -> usize {
