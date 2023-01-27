@@ -34,7 +34,6 @@ impl ListHandler {
   pub fn get(&mut self) -> String {
     let depth = self.lists.len();
     let list = self.lists.last_mut().unwrap();
-    
 
     if list.order == 0 {
       " ".repeat(depth)
