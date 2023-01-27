@@ -14,3 +14,10 @@ normal sentence"##;
 normal sentence"##;
   util::assert_cmp(md, expected);
 }
+
+#[test]
+fn test_strong() {
+  let md = r##"**strong**"##;
+  let expected = r##"[* strong]"##;
+  util::assert_cmp(md, expected);
+}

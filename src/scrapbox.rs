@@ -89,6 +89,9 @@ where
         let s = self.runtime.list.get();
         self.write(&s)?;
       }
+      Tag::Strong => {
+        self.write("[* ")?;
+      }
       _ => {}
     }
 
@@ -113,6 +116,9 @@ where
           ""
         };
         self.write(s)?;
+      }
+      Tag::Strong => {
+        self.write("]")?;
       }
       _ => {}
     }
