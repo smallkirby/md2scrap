@@ -8,11 +8,15 @@ use pulldown_cmark::{
 };
 
 mod list;
+pub mod option;
+
+use option::ScrapboxOption;
 
 struct ScrapboxWriter<I, W> {
   iter: I,
   writer: W,
   runtime: ParseRuntime,
+  option: ScrapboxOption,
 }
 
 struct ParseRuntime {
@@ -34,11 +38,12 @@ where
   I: Iterator<Item = Event<'a>>,
   W: StrWrite,
 {
-  fn new(iter: I, writer: W) -> Self {
+  fn new(iter: I, writer: W, option: ScrapboxOption) -> Self {
     Self {
       iter,
       writer,
       runtime: ParseRuntime::new(),
+      option: option,
     }
   }
 
@@ -92,6 +97,9 @@ where
         } else {
           level as usize
         };
+        if self.option.newline_before_heading {
+          self.writeln("")?;
+        }
         self.write(&format!("[{} ", "*".repeat(6 - heading_level + 1)))?; // TODO
       }
       Tag::List(order) => {
@@ -117,10 +125,11 @@ where
       Tag::CodeBlock(kind) => {
         match kind {
           CodeBlockKind::Indented => {
-            self.writeln("code:")?;
+            self.writeln("code: unnamed")?;
           }
           CodeBlockKind::Fenced(prog) => {
-            self.writeln(&format!("code:{}", prog))?;
+            let name = if prog.len() > 0 { &prog } else { "unnamed" };
+            self.writeln(&format!("code:{}", name))?;
           }
         }
 
@@ -167,9 +176,9 @@ where
   }
 }
 
-pub fn push_scrapbox<'a, I>(s: &mut String, iter: I)
+pub fn push_scrapbox<'a, I>(s: &mut String, iter: I, option: ScrapboxOption)
 where
   I: Iterator<Item = Event<'a>>,
 {
-  ScrapboxWriter::new(iter, s).run().unwrap();
+  ScrapboxWriter::new(iter, s, option).run().unwrap();
 }

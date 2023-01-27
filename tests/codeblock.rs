@@ -7,7 +7,7 @@ fn main() {
   println!("Hello, world!");
 }
 ```"##;
-  let expected = r##"code:
+  let expected = r##"code:unnamed
  fn main() {
    println!("Hello, world!");
  }

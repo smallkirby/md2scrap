@@ -3,8 +3,9 @@ use pulldown_cmark::{Options, Parser};
 
 pub fn convert(md: &str) -> String {
   let parser = Parser::new_ext(md, Options::all());
+  let option = scrapbox::option::ScrapboxOption::default();
   let mut output = String::new();
-  scrapbox::push_scrapbox(&mut output, parser);
+  scrapbox::push_scrapbox(&mut output, parser, option);
 
   output
 }
